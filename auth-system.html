@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left Half - Financial Management Info */
+        .left-section {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 60%; left: 80%; animation-delay: 2s; }
+        .floating-icon:nth-child(3) { top: 80%; left: 30%; animation-delay: 4s; }
+        .floating-icon:nth-child(4) { top: 30%; left: 70%; animation-delay: 1s; }
+        .floating-icon:nth-child(5) { top: 70%; left: 10%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .content {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .features {
+            list-style: none;
+            text-align: left;
+        }
+
+        .features li {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            animation: slideInLeft 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .features li:nth-child(1) { animation-delay: 0.2s; }
+        .features li:nth-child(2) { animation-delay: 0.4s; }
+        .features li:nth-child(3) { animation-delay: 0.6s; }
+        .features li:nth-child(4) { animation-delay: 0.8s; }
+
+        .features li:before {
+            content: '✓';
+            margin-right: 1rem;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Right Half - Login Section */
+        .right-section {
+            flex: 1;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .auth-container:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(255, 255, 255, 0.2);
+        }
+
+        .emoji-face {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .auth-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .otp-input {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .otp-input input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .auth-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .secondary-btn {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .secondary-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+            color: #764ba2;
+        }
+
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-message, .error-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-message {
+            background: rgba(212, 237, 218, 0.9);
+            color: #155724;
+        }
+
+        .error-message {
+            background: rgba(248, 215, 218, 0.9);
+            color: #721c24;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .timer {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Input Animation Effects */
+        .input-glow {
+            animation: glow 0.5s ease;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #667eea; }
+            50% { box-shadow: 0 0 20px #667eea, 0 0 30px #667eea; }
+            100% { box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-section {
+                flex: 0.4;
+            }
+            
+            .right-section {
+                flex: 0.6;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .auth-container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Half - Financial Management Info -->
+        <div class="left-section">
+            <div class="floating-elements">
+                <div class="floating-icon">💰</div>
+                <div class="floating-icon">📊</div>
+                <div class="floating-icon">📈</div>
+                <div class="floating-icon">💳</div>
+                <div class="floating-icon">🏦</div>
+            </div>
+            
+            <div class="content">
+                <div class="logo">💼</div>
+                <h1 class="title">Financial Management System</h1>
+                <p class="subtitle">Take control of your financial future</p>
+                
+                <ul class="features">
+                    <li>Track expenses and income seamlessly</li>
+                    <li>Generate detailed financial reports</li>
+                    <li>Set and monitor budget goals</li>
+                    <li>Secure and encrypted transactions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right Half - Authentication -->
+        <div class="right-section">
+            <div class="auth-container" onclick="containerClick()">
+                
+                <!-- Login Section -->
+                <div id="loginSection" class="form-section active">
+                    <div class="emoji-face" id="emojiLogin">😊</div>
+                    <div class="auth-header">
+                        <h1>Welcome Back</h1>
+                        <p>Sign in to your account</p>
+                    </div>
+
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" name="email" required 
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('login')"
+                                   onblur="handleBlur('login')">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="password" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('login')"
+                                   onblur="handleBlur('login')">
+                        </div>
+
+                        <button type="submit" class="auth-btn">Sign In</button>
+                    </form>
+
+                    <div class="link">
+                        <a href="#" onclick="showSection('forgotSection')">Forgot your password?</a>
+                    </div>
+
+                    <div class="link">
+                        <p>Don't have an account? <a href="#" onclick="showSection('signupSection')">Create Account</a></p>
+                    </div>
+                </div>
+
+                <!-- Sign Up Section -->
+                <div id="signupSection" class="form-section">
+                    <div class="emoji-face" id="emojiSignup">🤗</div>
+                    <div class="auth-header">
+                        <h1>Create Account</h1>
+                        <p>Join us today</p>
+                    </div>
+
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('signup')"
+                                   onblur="handleBlur('signup')">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" name="email" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('signup')"
+                                   onblur="handleBlur('signup')">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number</label>
+                            <input type="tel" id="phoneNumber" name="phone" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('signup')"
+                                   onblur="handleBlur('signup')">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" name="password" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('signup')"
+                                   onblur="handleBlur('signup')">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('signup')"
+                                   onblur="handleBlur('signup')">
+                        </div>
+
+                        <button type="submit" class="auth-btn">Create Account</button>
+                    </form>
+
+                    <div class="link">
+                        <p>Already have an account? <a href="#" onclick="showSection('loginSection')">Sign In</a></p>
+                    </div>
+                </div>
+
+                <!-- Forgot Password Section -->
+                <div id="forgotSection" class="form-section">
+                    <div class="emoji-face" id="emojiForgot">🤔</div>
+                    <div class="auth-header">
+                        <h1>Forgot Password</h1>
+                        <p>Enter your email to receive OTP</p>
+                    </div>
+
+                    <form id="forgotForm">
+                        <div class="form-group">
+                            <label for="forgotEmail">Email Address</label>
+                            <input type="email" id="forgotEmail" name="email" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('forgot')"
+                                   onblur="handleBlur('forgot')">
+                        </div>
+
+                        <button type="submit" class="auth-btn">Send OTP</button>
+                    </form>
+
+                    <div class="link">
+                        <a href="#" onclick="showSection('loginSection')">Back to Login</a>
+                    </div>
+                </div>
+
+                <!-- OTP Verification Section -->
+                <div id="otpSection" class="form-section">
+                    <div class="emoji-face" id="emojiOtp">🔐</div>
+                    <div class="auth-header">
+                        <h1>Verify OTP</h1>
+                        <p>Enter the 6-digit code sent to your email</p>
+                    </div>
+
+                    <div id="otpMessage" class="hidden"></div>
+
+                    <form id="otpForm">
+                        <div class="form-group">
+                            <div class="otp-input">
+                                <input type="text" maxlength="1" class="otp-digit" 
+                                       oninput="moveToNext(this, 1); handleOtpInput()" 
+                                       onfocus="handleFocus('otp')"
+                                       onblur="handleBlur('otp')">
+                                <input type="text" maxlength="1" class="otp-digit" 
+                                       oninput="moveToNext(this, 2); handleOtpInput()" 
+                                       onfocus="handleFocus('otp')"
+                                       onblur="handleBlur('otp')">
+                                <input type="text" maxlength="1" class="otp-digit" 
+                                       oninput="moveToNext(this, 3); handleOtpInput()" 
+                                       onfocus="handleFocus('otp')"
+                                       onblur="handleBlur('otp')">
+                                <input type="text" maxlength="1" class="otp-digit" 
+                                       oninput="moveToNext(this, 4); handleOtpInput()" 
+                                       onfocus="handleFocus('otp')"
+                                       onblur="handleBlur('otp')">
+                                <input type="text" maxlength="1" class="otp-digit" 
+                                       oninput="moveToNext(this, 5); handleOtpInput()" 
+                                       onfocus="handleFocus('otp')"
+                                       onblur="handleBlur('otp')">
+                                <input type="text" maxlength="1" class="otp-digit" 
+                                       oninput="moveToNext(this, 6); handleOtpInput()" 
+                                       onfocus="handleFocus('otp')"
+                                       onblur="handleBlur('otp')">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="auth-btn">Verify OTP</button>
+                        <button type="button" class="auth-btn secondary-btn" onclick="resendOTP()">Resend OTP</button>
+                    </form>
+
+                    <div class="timer" id="otpTimer"></div>
+
+                    <div class="link">
+                        <a href="#" onclick="showSection('forgotSection')">Change Email</a>
+                    </div>
+                </div>
+
+                <!-- Reset Password Section -->
+                <div id="resetSection" class="form-section">
+                    <div class="emoji-face" id="emojiReset">🔒</div>
+                    <div class="auth-header">
+                        <h1>Reset Password</h1>
+                        <p>Enter your new password</p>
+                    </div>
+
+                    <form id="resetForm">
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="newPassword" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('reset')"
+                                   onblur="handleBlur('reset')">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required
+                                   oninput="handleInput(this)" 
+                                   onkeydown="handleKeydown(this, event)"
+                                   onfocus="handleFocus('reset')"
+                                   onblur="handleBlur('reset')">
+                        </div>
+
+                        <button type="submit" class="auth-btn">Reset Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let otpTimer;
+        let otpCountdown = 300; // 5 minutes
+        let currentSection = 'login';
+        let typingDirection = 'right';
+
+        // Emoji expressions for different states
+        const emojis = {
+            login: {
+                default: '😊',
+                focus: '😌',
+                typing: '👀',
+                lookLeft: '😏',
+                lookRight: '😊',
+                happy: '😄',
+                error: '😅'
+            },
+            signup: {
+                default: '🤗',
+                focus: '😌',
+                typing: '👀',
+                lookLeft: '😏',
+                lookRight: '🤗',
+                happy: '😄',
+                error: '😅'
+            },
+            forgot: {
+                default: '🤔',
+                focus: '😌',
+                typing: '👀',
+                lookLeft: '😏',
+                lookRight: '🤔',
+                happy: '😄',
+                error: '😅'
+            },
+            otp: {
+                default: '🔐',
+                focus: '🤨',
+                typing: '🧐',
+                lookLeft: '😏',
+                lookRight: '🔐',
+                happy: '😄',
+                error: '😅'
+            },
+            reset: {
+                default: '🔒',
+                focus: '😌',
+                typing: '👀',
+                lookLeft: '😏',
+                lookRight: '🔒',
+                happy: '😄',
+                error: '😅'
+            }
+        };
+
+        function containerClick() {
+            const container = document.querySelector('.auth-container');
+            container.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                container.style.transform = 'translateY(-5px) scale(1.02)';
+            }, 100);
+        }
+
+        function updateEmoji(section, state) {
+            const emojiElement = document.getElementById(`emoji${section.charAt(0).toUpperCase() + section.slice(1)}`);
+            if (emojiElement && emojis[section] && emojis[section][state]) {
+                emojiElement.textContent = emojis[section][state];
+                emojiElement.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    emojiElement.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
+
+        function handleFocus(section) {
+            currentSection = section;
+            updateEmoji(section, 'focus');
+        }
+
+        function handleBlur(section) {
+            setTimeout(() => {
+                updateEmoji(section, 'default');
+            }, 500);
+        }
+
+        function handleInput(input) {
+            const section = currentSection;
+            input.classList.add('input-glow');
+            setTimeout(() => {
+                input.classList.remove('input-glow');
+            }, 500);
+            
+            updateEmoji(section, typingDirection === 'right' ? 'lookRight' : 'lookLeft');
+            
+            setTimeout(() => {
+                updateEmoji(section, 'typing');
+            }, 300);
+        }
+
+        function handleKeydown(input, event) {
+            if (event.key === 'Backspace') {
+                typingDirection = 'left';
+                updateEmoji(currentSection, 'lookLeft');
+            } else {
+                typingDirection = 'right';
+                updateEmoji(currentSection, 'lookRight');
+            }
+        }
+
+        function handleOtpInput() {
+            updateEmoji('otp', 'typing');
+            setTimeout(() => {
+                updateEmoji('otp', 'focus');
+            }, 500);
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update current section
+            currentSection = sectionId.replace('Section', '');
+            
+            // Set appropriate emoji
+            setTimeout(() => {
+                updateEmoji(currentSection, 'default');
+            }, 300);
+        }
+
+        function showMessage(message, type = 'success') {
+            const messageDiv = document.getElementById('otpMessage');
+            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+            messageDiv.textContent = message;
+            messageDiv.classList.remove('hidden');
+            
+            if (type === 'success') {
+                updateEmoji('otp', 'happy');
+            } else {
+                updateEmoji('otp', 'error');
+            }
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+                updateEmoji('otp', 'default');
+            }, 3000);
+        }
+
+        function moveToNext(current, nextIndex) {
+            if (current.value.length === 1 && nextIndex <= 6) {
+                const nextInput = document.querySelectorAll('.otp-digit')[nextIndex - 1];
+                if (nextInput) nextInput.focus();
+            }
+        }
+
+        function startOTPTimer() {
+            otpCountdown = 300;
+            const timerElement = document.getElementById('otpTimer');
+            
+            otpTimer = setInterval(() => {
+                const minutes = Math.floor(otpCountdown / 60);
+                const seconds = otpCountdown % 60;
+                timerElement.textContent = `Resend OTP in ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (otpCountdown <= 0) {
+                    clearInterval(otpTimer);
+                    timerElement.textContent = 'OTP expired. Click Resend OTP';
+                    updateEmoji('otp', 'error');
+                }
+                otpCountdown--;
+            }, 1000);
+        }
+
+        function resendOTP() {
+            showMessage('New OTP sent to your email!');
+            startOTPTimer();
+        }
+
+        function generateOTP() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        // Form handlers
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            updateEmoji('login', 'happy');
+            setTimeout(() => {
+                alert('Login successful! (This would redirect to dashboard)');
+                updateEmoji('login', 'default');
+            }, 1000);
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                updateEmoji('signup', 'error');
+                alert('Passwords do not match!');
+                setTimeout(() => updateEmoji('signup', 'default'), 2000);
+                return;
+            }
+            
+            updateEmoji('signup', 'happy');
+            setTimeout(() => {
+                alert('Account created successfully!');
+                showSection('loginSection');
+            }, 1000);
+        });
+
+        document.getElementById('forgotForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+            
+            const otp = generateOTP();
+            console.log('Generated OTP:', otp);
+            
+            updateEmoji('forgot', 'happy');
+            setTimeout(() => {
+                showSection('otpSection');
+                showMessage('OTP sent to your email!');
+                startOTPTimer();
+            }, 1000);
+        });
+
+        document.getElementById('otpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const otpInputs = document.querySelectorAll('.otp-digit');
+            const enteredOTP = Array.from(otpInputs).map(input => input.value).join('');
+            
+            if (enteredOTP.length !== 6) {
+                showMessage('Please enter complete OTP', 'error');
+                return;
+            }
+            
+            showMessage('OTP verified successfully!');
+            setTimeout(() => {
+                showSection('resetSection');
+            }, 1500);
+        });
+
+        document.getElementById('resetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            
+            if (newPassword !== confirmNewPassword) {
+                updateEmoji('reset', 'error');
+                alert('Passwords do not match!');
+                setTimeout(() => updateEmoji('reset', 'default'), 2000);
+                return;
+            }
+            
+            updateEmoji('reset', 'happy');
+            setTimeout(() => {
+                alert('Password reset successfully!');
+                showSection('loginSection');
+            }, 1000);
+        });
+
+        // Allow only numbers in OTP inputs
+        document.querySelectorAll('.otp-digit').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+                    e.preventDefault();
+                }
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '') {
+                    const prevInput = this.previousElementSibling;
+                    if (prevInput) {
+                        prevInput.focus();
+                        updateEmoji('otp', 'lookLeft');
+                    }
+                }
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateEmoji('login', 'default');
+        });
+    </script>
+</body>
+</html>
+

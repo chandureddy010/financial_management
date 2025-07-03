@@ -1,5 +1,4 @@
 // Dashboard Logic
-
 class DashboardManager {
     constructor() {
         this.currentUser = null;
@@ -35,6 +34,23 @@ class DashboardManager {
                 this.handleQuickAdd();
             });
         }
+        
+        // Modal close events - FIXED
+        const modal = DOM.get('quickAddModal');
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeQuickAddModal();
+                }
+            });
+        }
+        
+        // ESC key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeQuickAddModal();
+            }
+        });
         
         // Period change handlers
         const categoryPeriod = DOM.get('categoryPeriod');
@@ -389,7 +405,27 @@ class DashboardManager {
         this.renderDashboard();
         
         // Close modal
-        closeQuickAddModal();
+        this.closeQuickAddModal();
+    }
+    
+    openQuickAddModal() {
+        const modal = DOM.get('quickAddModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            // Focus on first input
+            setTimeout(() => {
+                const firstInput = modal.querySelector('input[type="number"]');
+                if (firstInput) firstInput.focus();
+            }, 100);
+        }
+    }
+    
+    closeQuickAddModal() {
+        const modal = DOM.get('quickAddModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            DOM.clearForm('quickAddForm');
+        }
     }
     
     refreshDashboard() {
@@ -415,12 +451,15 @@ window.logout = () => {
 };
 
 window.openQuickAddModal = () => {
-    DOM.show('quickAddModal');
+    if (window.dashboardManager) {
+        window.dashboardManager.openQuickAddModal();
+    }
 };
 
 window.closeQuickAddModal = () => {
-    DOM.hide('quickAddModal');
-    DOM.clearForm('quickAddForm');
+    if (window.dashboardManager) {
+        window.dashboardManager.closeQuickAddModal();
+    }
 };
 
 window.refreshDashboard = () => {

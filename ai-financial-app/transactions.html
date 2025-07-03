@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - AI Financial Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/transactions.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI FinanceHub</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-data.html" class="nav-link">
+                            <i class="fas fa-user-circle"></i>
+                            <span>User Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transactions.html" class="nav-link active">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="ai-advice.html" class="nav-link">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Advisor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Transactions</h1>
+                    <p>Manage your income, expenses, and budget allocations</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openTransactionModal()">
+                        <i class="fas fa-plus"></i> Add Transaction
+                    </button>
+                    <button class="btn btn-secondary" onclick="openBudgetWizard()">
+                        <i class="fas fa-magic"></i> Budget Wizard
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Transaction Content -->
+            <div class="transactions-content">
+                <!-- Summary Cards -->
+                <div class="summary-section">
+                    <div class="summary-cards">
+                        <div class="summary-card income-summary">
+                            <div class="card-header">
+                                <h3>Monthly Income</h3>
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="card-body">
+                                <div class="amount" id="monthlyIncome">$0.00</div>
+                                <div class="change positive" id="incomeChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card expense-summary">
+                            <div class="card-header">
+                                <h3>Monthly Expenses</h3>
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="card-body">
+                                <div class="amount" id="monthlyExpenses">$0.00</div>
+                                <div class="change negative" id="expenseChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card balance-summary">
+                            <div class="card-header">
+                                <h3>Net Balance</h3>
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <div class="card-body">
+                                <div class="amount" id="netBalance">$0.00</div>
+                                <div class="change" id="balanceChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card budget-summary">
+                            <div class="card-header">
+                                <h3>Budget Status</h3>
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="card-body">
+                                <div class="budget-progress">
+                                    <div class="progress-circle" id="budgetProgress">
+                                        <div class="progress-value" id="budgetPercentage">0%</div>
+                                    </div>
+                                    <div class="budget-text" id="budgetStatus">On Track</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filters and Search -->
+                <div class="controls-section">
+                    <div class="controls-left">
+                        <div class="search-box">
+                            <input type="text" id="searchTransactions" placeholder="Search transactions..." class="search-input">
+                            <button class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="filter-controls">
+                            <select id="typeFilter" class="filter-select">
+                                <option value="">All Types</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                            <select id="categoryFilter" class="filter-select">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="periodFilter" class="filter-select">
+                                <option value="">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">This Quarter</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-right">
+                        <button class="btn btn-secondary" onclick="exportTransactions()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="btn btn-secondary" onclick="importTransactions()">
+                            <i class="fas fa-upload"></i> Import
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Transactions List -->
+                <div class="transactions-section">
+                    <div class="transactions-header">
+                        <h3>Recent Transactions</h3>
+                        <div class="view-options">
+                            <button class="view-btn active" data-view="list" onclick="switchView('list')">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button class="view-btn" data-view="grid" onclick="switchView('grid')">
+                                <i class="fas fa-th"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="transactions-container" id="transactionsContainer">
+                        <!-- Transactions will be populated here -->
+                    </div>
+                    
+                    <div class="pagination" id="pagination">
+                        <!-- Pagination controls will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Budget Allocation -->
+                <div class="budget-section">
+                    <div class="budget-header">
+                        <h3>Budget Allocation</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openBudgetModal()">
+                            <i class="fas fa-plus"></i> Add Budget
+                        </button>
+                    </div>
+                    
+                    <div class="budget-grid" id="budgetGrid">
+                        <!-- Budget allocation items will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="transactionModalTitle">Add Transaction</h3>
+                <button class="modal-close" onclick="closeTransactionModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="transactionForm">
+                    <div class="form-group">
+                        <label class="form-label">Transaction Type</label>
+                        <div class="type-selector">
+                            <label class="type-option income-option">
+                                <input type="radio" name="type" value="income">
+                                <div class="type-card">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>Income</span>
+                                </div>
+                            </label>
+                            <label class="type-option expense-option">
+                                <input type="radio" name="type" value="expense" checked>
+                                <div class="type-card">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>Expense</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="transactionAmount">Amount</label>
+                        <input type="number" id="transactionAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="transactionCategory">Category</label>
+                        <select id="transactionCategory" class="form-input" required>
+                            <option value="">Select category...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="transactionDescription">Description</label>
+                        <input type="text" id="transactionDescription" class="form-input" placeholder="What was this transaction for?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="transactionDate">Date</label>
+                        <input type="date" id="transactionDate" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="transactionRecurring">Recurring</label>
+                        <select id="transactionRecurring" class="form-input">
+                            <option value="none">No</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-full" id="transactionSubmitBtn">
+                        <i class="fas fa-save"></i> Save Transaction
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Budget Wizard Modal -->
+    <div id="budgetWizardModal" class="modal-overlay hidden">
+        <div class="modal-content wizard-content">
+            <div class="modal-header">
+                <h3>Budget Wizard</h3>
+                <button class="modal-close" onclick="closeBudgetWizard()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="wizard-steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-indicator">1</div>
+                        <span>Income</span>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-indicator">2</div>
+                        <span>Priorities</span>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-indicator">3</div>
+                        <span>Allocation</span>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-indicator">4</div>
+                        <span>Review</span>
+                    </div>
+                </div>
+                
+                <div class="wizard-content">
+                    <!-- Step 1: Income -->
+                    <div class="wizard-step active" id="step1">
+                        <h4>What's your monthly income?</h4>
+                        <div class="income-input">
+                            <input type="number" id="wizardIncome" class="form-input large-input" placeholder="0.00" step="0.01">
+                            <span class="currency-symbol">$</span>
+                        </div>
+                        <p class="step-description">Enter your total monthly income from all sources</p>
+                    </div>
+                    
+                    <!-- Step 2: Priorities -->
+                    <div class="wizard-step" id="step2">
+                        <h4>What are your spending priorities?</h4>
+                        <div class="priorities-list" id="prioritiesList">
+                            <!-- Priority items will be populated here -->
+                        </div>
+                        <p class="step-description">Drag and drop to reorder your spending priorities</p>
+                    </div>
+                    
+                    <!-- Step 3: Allocation -->
+                    <div class="wizard-step" id="step3">
+                        <h4>Budget Allocation</h4>
+                        <div class="allocation-sliders" id="allocationSliders">
+                            <!-- Allocation sliders will be populated here -->
+                        </div>
+                        <div class="allocation-summary">
+                            <div class="summary-item">
+                                <span>Total Allocated:</span>
+                                <span id="totalAllocated">$0.00</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Remaining:</span>
+                                <span id="remainingAmount">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4: Review -->
+                    <div class="wizard-step" id="step4">
+                        <h4>Review Your Budget</h4>
+                        <div class="budget-review" id="budgetReview">
+                            <!-- Budget review will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wizard-navigation">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevStep()" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="btn btn-success hidden" id="finishBtn" onclick="finishBudgetWizard()">
+                        <i class="fas fa-check"></i> Create Budget
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Budget Modal -->
+    <div id="budgetModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Budget</h3>
+                <button class="modal-close" onclick="closeBudgetModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="budgetForm">
+                    <div class="form-group">
+                        <label class="form-label" for="budgetCategory">Category</label>
+                        <select id="budgetCategory" class="form-input" required>
+                            <option value="">Select category...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="budgetAmount">Monthly Amount</label>
+                        <input type="number" id="budgetAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="budgetPeriod">Period</label>
+                        <select id="budgetPeriod" class="form-input" required>
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-full">
+                        <i class="fas fa-save"></i> Save Budget
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/transactions.js"></script>
+</body>
+</html>

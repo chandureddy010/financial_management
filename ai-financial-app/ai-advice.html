@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Advisor - AI Financial Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/ai-advice.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI FinanceHub</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-data.html" class="nav-link">
+                            <i class="fas fa-user-circle"></i>
+                            <span>User Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transactions.html" class="nav-link">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="ai-advice.html" class="nav-link active">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Advisor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>AI Financial Advisor</h1>
+                    <p>Get personalized financial insights and advice powered by AI</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="generateReport()">
+                        <i class="fas fa-chart-line"></i> Generate Report
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearChat()">
+                        <i class="fas fa-trash"></i> Clear Chat
+                    </button>
+                </div>
+            </header>
+            
+            <!-- AI Advisor Content -->
+            <div class="ai-content">
+                <!-- AI Insights Panel -->
+                <div class="insights-panel">
+                    <div class="insights-header">
+                        <h3><i class="fas fa-lightbulb"></i> Smart Insights</h3>
+                        <button class="btn btn-sm btn-primary" onclick="refreshInsights()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="insights-grid" id="insightsGrid">
+                        <!-- AI insights will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Chat Interface -->
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="ai-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="ai-info">
+                            <h3>FinanceBot</h3>
+                            <p class="ai-status" id="aiStatus">Ready to help</p>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="exportChat()">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-bubble">
+                                    <p>Hello! I'm your AI Financial Advisor. I can help you with:</p>
+                                    <ul>
+                                        <li>Analyzing your spending patterns</li>
+                                        <li>Creating budget recommendations</li>
+                                        <li>Investment advice based on your goals</li>
+                                        <li>Savings strategies</li>
+                                        <li>Financial planning tips</li>
+                                    </ul>
+                                    <p>What would you like to know about your finances?</p>
+                                </div>
+                                <div class="message-timestamp">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-questions">
+                        <h4>Quick Questions</h4>
+                        <div class="questions-grid">
+                            <button class="question-btn" onclick="askQuestion('How can I reduce my expenses?')">
+                                <i class="fas fa-arrow-down"></i>
+                                How can I reduce my expenses?
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('What is my spending pattern?')">
+                                <i class="fas fa-chart-pie"></i>
+                                What is my spending pattern?
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('Should I increase my budget?')">
+                                <i class="fas fa-calculator"></i>
+                                Should I increase my budget?
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('Investment recommendations please')">
+                                <i class="fas fa-chart-line"></i>
+                                Investment recommendations
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('How to improve my savings?')">
+                                <i class="fas fa-piggy-bank"></i>
+                                How to improve my savings?
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('Plan for financial goals')">
+                                <i class="fas fa-target"></i>
+                                Plan for financial goals
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <form id="chatForm" class="chat-input-form">
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    id="chatInput" 
+                                    placeholder="Ask me about your finances..." 
+                                    class="chat-input"
+                                    maxlength="500"
+                                >
+                                <button type="submit" class="send-btn" disabled>
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="input-hints">
+                                <span class="char-count" id="charCount">0/500</span>
+                                <span class="hint">Pro tip: Be specific about your financial questions for better advice</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Financial Analysis -->
+                <div class="analysis-panel">
+                    <div class="analysis-header">
+                        <h3><i class="fas fa-chart-bar"></i> Financial Analysis</h3>
+                        <select id="analysisType" onchange="updateAnalysis()">
+                            <option value="spending">Spending Analysis</option>
+                            <option value="income">Income Analysis</option>
+                            <option value="budget">Budget Analysis</option>
+                            <option value="trends">Trend Analysis</option>
+                        </select>
+                    </div>
+                    
+                    <div class="analysis-content" id="analysisContent">
+                        <!-- Analysis content will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Recommendations -->
+                <div class="recommendations-panel">
+                    <div class="recommendations-header">
+                        <h3><i class="fas fa-thumbs-up"></i> AI Recommendations</h3>
+                        <button class="btn btn-sm btn-primary" onclick="generateRecommendations()">
+                            <i class="fas fa-magic"></i> Generate
+                        </button>
+                    </div>
+                    
+                    <div class="recommendations-grid" id="recommendationsGrid">
+                        <!-- Recommendations will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- AI Settings Modal -->
+    <div id="aiSettingsModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>AI Advisor Settings</h3>
+                <button class="modal-close" onclick="closeAISettingsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="aiSettingsForm">
+                    <div class="form-group">
+                        <label class="form-label">AI Response Style</label>
+                        <select id="responseStyle" class="form-input">
+                            <option value="detailed">Detailed Explanations</option>
+                            <option value="concise">Concise Answers</option>
+                            <option value="bullet">Bullet Points</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Focus Areas</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="focusBudgeting" checked>
+                                <span class="checkmark"></span>
+                                Budgeting & Expenses
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="focusInvestments" checked>
+                                <span class="checkmark"></span>
+                                Investments
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="focusSavings" checked>
+                                <span class="checkmark"></span>
+                                Savings Strategies
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="focusDebt" checked>
+                                <span class="checkmark"></span>
+                                Debt Management
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Risk Tolerance</label>
+                        <div class="risk-slider">
+                            <input type="range" id="riskTolerance" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels">
+                                <span>Conservative</span>
+                                <span>Moderate</span>
+                                <span>Aggressive</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-full">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai-advice.js"></script>
+</body>
+</html>

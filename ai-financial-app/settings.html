@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - AI Financial Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI FinanceHub</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-data.html" class="nav-link">
+                            <i class="fas fa-user-circle"></i>
+                            <span>User Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transactions.html" class="nav-link">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="ai-advice.html" class="nav-link">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Advisor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link active">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Settings</h1>
+                    <p>Manage your account settings, preferences, and security</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="saveAllSettings()">
+                        <i class="fas fa-save"></i> Save All Changes
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSettings()">
+                        <i class="fas fa-undo"></i> Reset to Defaults
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Settings Content -->
+            <div class="settings-content">
+                <!-- Settings Navigation -->
+                <div class="settings-nav">
+                    <ul class="settings-menu">
+                        <li class="settings-menu-item">
+                            <button class="settings-menu-btn active" data-section="account" onclick="switchSection('account')">
+                                <i class="fas fa-user"></i>
+                                <span>Account</span>
+                            </button>
+                        </li>
+                        <li class="settings-menu-item">
+                            <button class="settings-menu-btn" data-section="security" onclick="switchSection('security')">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Security</span>
+                            </button>
+                        </li>
+                        <li class="settings-menu-item">
+                            <button class="settings-menu-btn" data-section="preferences" onclick="switchSection('preferences')">
+                                <i class="fas fa-sliders-h"></i>
+                                <span>Preferences</span>
+                            </button>
+                        </li>
+                        <li class="settings-menu-item">
+                            <button class="settings-menu-btn" data-section="notifications" onclick="switchSection('notifications')">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </button>
+                        </li>
+                        <li class="settings-menu-item">
+                            <button class="settings-menu-btn" data-section="privacy" onclick="switchSection('privacy')">
+                                <i class="fas fa-lock"></i>
+                                <span>Privacy</span>
+                            </button>
+                        </li>
+                        <li class="settings-menu-item">
+                            <button class="settings-menu-btn" data-section="data" onclick="switchSection('data')">
+                                <i class="fas fa-database"></i>
+                                <span>Data Management</span>
+                            </button>
+                        </li>
+                        <li class="settings-menu-item">
+                            <button class="settings-menu-btn" data-section="about" onclick="switchSection('about')">
+                                <i class="fas fa-info-circle"></i>
+                                <span>About</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Settings Panels -->
+                <div class="settings-panels">
+                    <!-- Account Settings -->
+                    <div class="settings-panel active" id="account-panel">
+                        <div class="panel-header">
+                            <h3>Account Settings</h3>
+                            <p>Manage your personal information and account details</p>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Personal Information</h4>
+                            <form id="accountForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="fullName">Full Name</label>
+                                        <input type="text" id="fullName" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="email">Email Address</label>
+                                        <input type="email" id="email" class="form-input" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="phone">Phone Number</label>
+                                        <input type="tel" id="phone" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="timezone">Timezone</label>
+                                        <select id="timezone" class="form-input">
+                                            <option value="America/New_York">Eastern Time (ET)</option>
+                                            <option value="America/Chicago">Central Time (CT)</option>
+                                            <option value="America/Denver">Mountain Time (MT)</option>
+                                            <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                                            <option value="UTC">UTC</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="bio">Bio (Optional)</label>
+                                    <textarea id="bio" class="form-input" rows="3" placeholder="Tell us a bit about yourself..."></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Profile Picture</h4>
+                            <div class="profile-picture-section">
+                                <div class="current-picture">
+                                    <img id="profilePicture" src="" alt="Profile" class="profile-img hidden">
+                                    <div class="profile-placeholder">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="picture-actions">
+                                    <button class="btn btn-primary" onclick="uploadProfilePicture()">
+                                        <i class="fas fa-upload"></i> Upload New Picture
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="removeProfilePicture()">
+                                        <i class="fas fa-trash"></i> Remove Picture
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Wallet Integration</h4>
+                            <div class="wallet-section">
+                                <div class="wallet-status" id="walletStatus">
+                                    <div class="status-indicator disconnected" id="walletIndicator"></div>
+                                    <div class="status-text">
+                                        <span class="status-label" id="walletLabel">Not Connected</span>
+                                        <span class="wallet-address" id="walletAddress">No wallet connected</span>
+                                    </div>
+                                    <button class="btn btn-primary" id="walletBtn" onclick="toggleWallet()">
+                                        <i class="fas fa-wallet"></i> Connect Wallet
+                                    </button>
+                                </div>
+                                <div class="wallet-info">
+                                    <p>Connect your MetaMask wallet to enable crypto features and enhanced security.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Settings -->
+                    <div class="settings-panel" id="security-panel">
+                        <div class="panel-header">
+                            <h3>Security Settings</h3>
+                            <p>Manage your password and security preferences</p>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Change Password</h4>
+                            <form id="passwordForm">
+                                <div class="form-group">
+                                    <label class="form-label" for="currentPassword">Current Password</label>
+                                    <input type="password" id="currentPassword" class="form-input" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="newPassword">New Password</label>
+                                    <input type="password" id="newPassword" class="form-input" required>
+                                    <div class="password-strength" id="passwordStrength"></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="confirmNewPassword">Confirm New Password</label>
+                                    <input type="password" id="confirmNewPassword" class="form-input" required>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-key"></i> Update Password
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Two-Factor Authentication</h4>
+                            <div class="security-feature">
+                                <div class="feature-info">
+                                    <h5>SMS Verification</h5>
+                                    <p>Receive verification codes via SMS</p>
+                                </div>
+                                <div class="feature-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="smsAuth">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="security-feature">
+                                <div class="feature-info">
+                                    <h5>Email Verification</h5>
+                                    <p>Receive verification codes via email</p>
+                                </div>
+                                <div class="feature-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="emailAuth" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Login Sessions</h4>
+                            <div class="sessions-list">
+                                <div class="session-item">
+                                    <div class="session-info">
+                                        <div class="session-device">
+                                            <i class="fas fa-laptop"></i>
+                                            <span>Current Session</span>
+                                        </div>
+                                        <div class="session-details">
+                                            <span class="session-location">New York, NY</span>
+                                            <span class="session-time">Active now</span>
+                                        </div>
+                                    </div>
+                                    <span class="session-status current">Current</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section danger-zone">
+                            <h4>Danger Zone</h4>
+                            <div class="danger-actions">
+                                <button class="btn btn-danger" onclick="showDeleteAccountModal()">
+                                    <i class="fas fa-user-times"></i> Delete Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preferences Settings -->
+                    <div class="settings-panel" id="preferences-panel">
+                        <div class="panel-header">
+                            <h3>Preferences</h3>
+                            <p>Customize your app experience and display settings</p>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Appearance</h4>
+                            <div class="preference-group">
+                                <label class="form-label">Theme</label>
+                                <div class="theme-options">
+                                    <label class="theme-option">
+                                        <input type="radio" name="theme" value="light" checked>
+                                        <div class="theme-preview light">
+                                            <div class="preview-header"></div>
+                                            <div class="preview-content"></div>
+                                        </div>
+                                        <span>Light</span>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="theme" value="dark">
+                                        <div class="theme-preview dark">
+                                            <div class="preview-header"></div>
+                                            <div class="preview-content"></div>
+                                        </div>
+                                        <span>Dark</span>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="theme" value="auto">
+                                        <div class="theme-preview auto">
+                                            <div class="preview-header"></div>
+                                            <div class="preview-content"></div>
+                                        </div>
+                                        <span>Auto</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Financial Settings</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="currency">Default Currency</label>
+                                    <select id="currency" class="form-input">
+                                        <option value="USD">USD - US Dollar</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="JPY">JPY - Japanese Yen</option>
+                                        <option value="CAD">CAD - Canadian Dollar</option>
+                                        <option value="AUD">AUD - Australian Dollar</option>
+                                        <option value="CHF">CHF - Swiss Franc</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="dateFormat">Date Format</label>
+                                    <select id="dateFormat" class="form-input">
+                                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                        <option value="MMM DD, YYYY">MMM DD, YYYY</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="budgetCycle">Budget Cycle</label>
+                                    <select id="budgetCycle" class="form-input">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="quarterly">Quarterly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="startOfWeek">Start of Week</label>
+                                    <select id="startOfWeek" class="form-input">
+                                        <option value="0">Sunday</option>
+                                        <option value="1">Monday</option>
+                                        <option value="6">Saturday</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Dashboard Settings</h4>
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <label class="preference-label">Show Quick Stats</label>
+                                    <span class="preference-description">Display summary cards on dashboard</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showQuickStats" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <label class="preference-label">Animated Charts</label>
+                                    <span class="preference-description">Enable chart animations</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="animatedCharts" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <label class="preference-label">Auto-refresh Data</label>
+                                    <span class="preference-description">Automatically refresh data every 5 minutes</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoRefresh">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications Settings -->
+                    <div class="settings-panel" id="notifications-panel">
+                        <div class="panel-header">
+                            <h3>Notification Settings</h3>
+                            <p>Manage how and when you receive notifications</p>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Email Notifications</h4>
+                            <div class="notification-group">
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <label class="notification-label">Budget Alerts</label>
+                                        <span class="notification-description">Get notified when you're close to budget limits</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="budgetAlerts" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <label class="notification-label">Weekly Reports</label>
+                                        <span class="notification-description">Receive weekly spending summaries</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="weeklyReports" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <label class="notification-label">Goal Achievements</label>
+                                        <span class="notification-description">Celebrate when you reach financial goals</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="goalAchievements" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <label class="notification-label">Security Alerts</label>
+                                        <span class="notification-description">Important account security notifications</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="securityAlerts" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Push Notifications</h4>
+                            <div class="notification-group">
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <label class="notification-label">Transaction Reminders</label>
+                                        <span class="notification-description">Remind you to log recent transactions</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="transactionReminders">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification-item">
+                                    <div class="notification-info">
+                                        <label class="notification-label">AI Insights</label>
+                                        <span class="notification-description">New personalized insights from AI</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="aiInsights" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Notification Timing</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="quietHoursStart">Quiet Hours Start</label>
+                                    <input type="time" id="quietHoursStart" class="form-input" value="22:00">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="quietHoursEnd">Quiet Hours End</label>
+                                    <input type="time" id="quietHoursEnd" class="form-input" value="08:00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Privacy Settings -->
+                    <div class="settings-panel" id="privacy-panel">
+                        <div class="panel-header">
+                            <h3>Privacy Settings</h3>
+                            <p>Control your privacy and data usage preferences</p>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Data Collection</h4>
+                            <div class="privacy-item">
+                                <div class="privacy-info">
+                                    <label class="privacy-label">Usage Analytics</label>
+                                    <span class="privacy-description">Help us improve the app by sharing anonymous usage data</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="usageAnalytics" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="privacy-item">
+                                <div class="privacy-info">
+                                    <label class="privacy-label">Crash Reports</label>
+                                    <span class="privacy-description">Automatically send crash reports to help fix bugs</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="crashReports" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Data Sharing</h4>
+                            <div class="privacy-item">
+                                <div class="privacy-info">
+                                    <label class="privacy-label">Personalized Tips</label>
+                                    <span class="privacy-description">Use your data to provide personalized financial advice</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="personalizedTips" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="privacy-item">
+                                <div class="privacy-info">
+                                    <label class="privacy-label">Marketing Communications</label>
+                                    <span class="privacy-description">Receive updates about new features and tips</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="marketingComms">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Account Visibility</h4>
+                            <div class="form-group">
+                                <label class="form-label" for="profileVisibility">Profile Visibility</label>
+                                <select id="profileVisibility" class="form-input">
+                                    <option value="private">Private</option>
+                                    <option value="friends">Friends Only</option>
+                                    <option value="public">Public</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Management -->
+                    <div class="settings-panel" id="data-panel">
+                        <div class="panel-header">
+                            <h3>Data Management</h3>
+                            <p>Import, export, and manage your financial data</p>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Data Export</h4>
+                            <div class="data-export-options">
+                                <div class="export-option">
+                                    <div class="export-info">
+                                        <h5>Complete Data Export</h5>
+                                        <p>Download all your data including transactions, budgets, and settings</p>
+                                    </div>
+                                    <button class="btn btn-primary" onclick="exportAllData()">
+                                        <i class="fas fa-download"></i> Export All Data
+                                    </button>
+                                </div>
+                                
+                                <div class="export-option">
+                                    <div class="export-info">
+                                        <h5>Transactions Only</h5>
+                                        <p>Download just your transaction history</p>
+                                    </div>
+                                    <button class="btn btn-secondary" onclick="exportTransactions()">
+                                        <i class="fas fa-file-csv"></i> Export Transactions
+                                    </button>
+                                </div>
+                                
+                                <div class="export-option">
+                                    <div class="export-info">
+                                        <h5>Financial Report</h5>
+                                        <p>Generate a comprehensive financial report</p>
+                                    </div>
+                                    <button class="btn btn-secondary" onclick="generateFinancialReport()">
+                                        <i class="fas fa-chart-line"></i> Generate Report
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Data Import</h4>
+                            <div class="data-import-options">
+                                <div class="import-option">
+                                    <div class="import-info">
+                                        <h5>Import Transactions</h5>
+                                        <p>Import transactions from CSV or JSON files</p>
+                                    </div>
+                                    <button class="btn btn-primary" onclick="importTransactions()">
+                                        <i class="fas fa-upload"></i> Import File
+                                    </button>
+                                </div>
+                                
+                                <div class="import-option">
+                                    <div class="import-info">
+                                        <h5>Bank Import (Coming Soon)</h5>
+                                        <p>Connect your bank account for automatic transaction import</p>
+                                    </div>
+                                    <button class="btn btn-secondary" disabled>
+                                        <i class="fas fa-university"></i> Connect Bank
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Data Storage</h4>
+                            <div class="storage-info">
+                                <div class="storage-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Transactions</span>
+                                        <span class="stat-value" id="transactionCount">0</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Categories</span>
+                                        <span class="stat-value" id="categoryCount">0</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Budgets</span>
+                                        <span class="stat-value" id="budgetCount">0</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Storage Used</span>
+                                        <span class="stat-value" id="storageUsed">0 KB</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section danger-zone">
+                            <h4>Data Cleanup</h4>
+                            <div class="cleanup-actions">
+                                <button class="btn btn-warning" onclick="clearCacheData()">
+                                    <i class="fas fa-broom"></i> Clear Cache
+                                </button>
+                                <button class="btn btn-danger" onclick="showClearDataModal()">
+                                    <i class="fas fa-trash"></i> Clear All Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- About -->
+                    <div class="settings-panel" id="about-panel">
+                        <div class="panel-header">
+                            <h3>About AI FinanceHub</h3>
+                            <p>Information about the application and support</p>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <div class="app-info">
+                                <div class="app-logo">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="app-details">
+                                    <h4>AI FinanceHub</h4>
+                                    <p class="version">Version 1.0.0</p>
+                                    <p class="description">Your intelligent financial management companion powered by AI</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Features</h4>
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <h5>Smart Budgeting</h5>
+                                    <p>AI-powered budget recommendations</p>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-robot"></i>
+                                    <h5>AI Advisor</h5>
+                                    <p>Personalized financial advice</p>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h5>Secure</h5>
+                                    <p>Bank-level security measures</p>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fab fa-ethereum"></i>
+                                    <h5>Crypto Ready</h5>
+                                    <p>MetaMask wallet integration</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Support</h4>
+                            <div class="support-options">
+                                <a href="#" class="support-item">
+                                    <i class="fas fa-book"></i>
+                                    <div class="support-text">
+                                        <h5>Documentation</h5>
+                                        <p>Learn how to use all features</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="support-item">
+                                    <i class="fas fa-question-circle"></i>
+                                    <div class="support-text">
+                                        <h5>FAQ</h5>
+                                        <p>Frequently asked questions</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="support-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <div class="support-text">
+                                        <h5>Contact Support</h5>
+                                        <p>Get help from our team</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="support-item">
+                                    <i class="fas fa-bug"></i>
+                                    <div class="support-text">
+                                        <h5>Report Bug</h5>
+                                        <p>Help us improve the app</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h4>Legal</h4>
+                            <div class="legal-links">
+                                <a href="#">Terms of Service</a>
+                                <a href="#">Privacy Policy</a>
+                                <a href="#">License Agreement</a>
+                                <a href="#">Open Source Licenses</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Delete Account Modal -->
+    <div id="deleteAccountModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Account</h3>
+                <button class="modal-close" onclick="hideDeleteAccountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>This action cannot be undone!</h4>
+                    <p>Deleting your account will permanently remove all your data including transactions, budgets, and settings.</p>
+                </div>
+                
+                <form id="deleteAccountForm">
+                    <div class="form-group">
+                        <label class="form-label">Type "DELETE" to confirm</label>
+                        <input type="text" id="deleteConfirmation" class="form-input" placeholder="DELETE" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Enter your password</label>
+                        <input type="password" id="deletePassword" class="form-input" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-danger w-full">
+                        <i class="fas fa-trash"></i> Delete My Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Clear Data Modal -->
+    <div id="clearDataModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Clear All Data</h3>
+                <button class="modal-close" onclick="hideClearDataModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Warning!</h4>
+                    <p>This will permanently delete all your financial data including transactions, budgets, and categories. Your account will remain active but all data will be lost.</p>
+                </div>
+                
+                <div class="data-items">
+                    <div class="data-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="clearTransactions" checked>
+                            <span class="checkmark"></span>
+                            Transactions
+                        </label>
+                    </div>
+                    <div class="data-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="clearBudgets" checked>
+                            <span class="checkmark"></span>
+                            Budgets
+                        </label>
+                    </div>
+                    <div class="data-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="clearCategories">
+                            <span class="checkmark"></span>
+                            Custom Categories
+                        </label>
+                    </div>
+                    <div class="data-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="clearConversations" checked>
+                            <span class="checkmark"></span>
+                            AI Conversations
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="hideClearDataModal()">Cancel</button>
+                    <button class="btn btn-danger" onclick="confirmClearData()">
+                        <i class="fas fa-trash"></i> Clear Selected Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/metamask.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>

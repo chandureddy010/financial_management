@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Financial Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="landing-container">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-brain"></i>
+                <h2>AI FinanceHub</h2>
+            </div>
+        </nav>
+
+        <main class="hero-section">
+            <div class="hero-content">
+                <h1>Smart Financial Management with AI</h1>
+                <p>Take control of your finances with AI-powered insights, budget tracking, and personalized advice</p>
+                
+                <div class="auth-buttons">
+                    <button class="btn btn-primary" onclick="location.href='signin.html'">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                    <button class="btn btn-secondary" onclick="location.href='signup.html'">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+
+                <div class="metamask-section">
+                    <div class="divider">
+                        <span>Or</span>
+                    </div>
+                    <button class="btn btn-metamask" onclick="connectMetamask()">
+                        <i class="fab fa-ethereum"></i> Connect with MetaMask
+                    </button>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <i class="fas fa-chart-pie"></i>
+                        <h3>Smart Budgeting</h3>
+                        <p>AI-powered budget allocation</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI Advisor</h3>
+                        <p>Personalized financial advice</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Secure & Private</h3>
+                        <p>Your data stays protected</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/metamask.js"></script>
+    <script src="js/utils.js"></script>
+</body>
+</html>

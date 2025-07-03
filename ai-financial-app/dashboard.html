@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Financial Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI FinanceHub</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link active">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-data.html" class="nav-link">
+                            <i class="fas fa-user-circle"></i>
+                            <span>User Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transactions.html" class="nav-link">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="ai-advice.html" class="nav-link">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Advisor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back! Here's your financial overview</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openQuickAddModal()">
+                        <i class="fas fa-plus"></i> Quick Add
+                    </button>
+                    <button class="btn btn-secondary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Overview Cards -->
+                <div class="overview-section">
+                    <div class="overview-cards">
+                        <div class="overview-card balance-card">
+                            <div class="card-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">Total Balance</div>
+                                <div class="card-value" id="totalBalance">$0.00</div>
+                                <div class="card-change positive" id="balanceChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card income-card">
+                            <div class="card-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">Monthly Income</div>
+                                <div class="card-value" id="monthlyIncome">$0.00</div>
+                                <div class="card-change positive" id="incomeChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card expense-card">
+                            <div class="card-icon">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">Monthly Expenses</div>
+                                <div class="card-value" id="monthlyExpenses">$0.00</div>
+                                <div class="card-change negative" id="expenseChange">+0.00%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card savings-card">
+                            <div class="card-icon">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">Savings Goal</div>
+                                <div class="card-value" id="savingsGoal">$0.00</div>
+                                <div class="card-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="savingsProgress"></div>
+                                    </div>
+                                    <span class="progress-text" id="savingsPercentage">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="charts-grid">
+                        <!-- Spending by Category -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Spending by Category</h3>
+                                <div class="chart-controls">
+                                    <select id="categoryPeriod" onchange="updateCategoryChart()">
+                                        <option value="week">This Week</option>
+                                        <option value="month" selected>This Month</option>
+                                        <option value="year">This Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Income vs Expenses -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Income vs Expenses</h3>
+                                <div class="chart-controls">
+                                    <select id="incomeExpensePeriod" onchange="updateIncomeExpenseChart()">
+                                        <option value="6months">6 Months</option>
+                                        <option value="year" selected>1 Year</option>
+                                        <option value="2years">2 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="incomeExpenseChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Budget Progress -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Budget Progress</h3>
+                                <div class="chart-controls">
+                                    <button class="btn btn-sm btn-primary" onclick="manageBudgets()">
+                                        <i class="fas fa-cog"></i> Manage
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="budget-list" id="budgetList">
+                                <!-- Budget items will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Transactions -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Recent Transactions</h3>
+                                <div class="chart-controls">
+                                    <a href="transactions.html" class="btn btn-sm btn-secondary">
+                                        View All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="transactions-list" id="recentTransactions">
+                                <!-- Recent transactions will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Insights Section -->
+                <div class="insights-section">
+                    <div class="insights-card">
+                        <div class="insights-header">
+                            <h3><i class="fas fa-brain"></i> AI Insights</h3>
+                            <button class="btn btn-sm btn-primary" onclick="generateNewInsights()">
+                                <i class="fas fa-refresh"></i> Generate New
+                            </button>
+                        </div>
+                        <div class="insights-content" id="aiInsights">
+                            <div class="insight-item">
+                                <div class="insight-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="insight-text">
+                                    <h4>Spending Pattern Analysis</h4>
+                                    <p>Connect your accounts to get personalized AI insights about your spending patterns and saving opportunities.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Quick Add Modal -->
+    <div id="quickAddModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Quick Add Transaction</h3>
+                <button class="modal-close" onclick="closeQuickAddModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="quickAddForm">
+                    <div class="form-group">
+                        <label class="form-label">Type</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="type" value="expense" checked>
+                                <span class="radio-custom"></span>
+                                Expense
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="type" value="income">
+                                <span class="radio-custom"></span>
+                                Income
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="quickAmount">Amount</label>
+                        <input type="number" id="quickAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="quickCategory">Category</label>
+                        <select id="quickCategory" class="form-input" required>
+                            <option value="">Select category...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="quickDescription">Description</label>
+                        <input type="text" id="quickDescription" class="form-input" placeholder="What was this for?">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-full">
+                        <i class="fas fa-plus"></i> Add Transaction
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

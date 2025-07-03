@@ -1,0 +1,12 @@
+[
+    {"id": "food", "name": "Food & Dining", "icon": "fas fa-utensils", "color": "#ef4444"},
+    {"id": "transport", "name": "Transportation", "icon": "fas fa-car", "color": "#3b82f6"},
+    {"id": "shopping", "name": "Shopping", "icon": "fas fa-shopping-cart", "color": "#10b981"},
+    {"id": "entertainment", "name": "Entertainment", "icon": "fas fa-film", "color": "#f59e0b"},
+    {"id": "utilities", "name": "Utilities", "icon": "fas fa-lightbulb", "color": "#8b5cf6"},
+    {"id": "healthcare", "name": "Healthcare", "icon": "fas fa-heartbeat", "color": "#ec4899"},
+    {"id": "education", "name": "Education", "icon": "fas fa-graduation-cap", "color": "#06b6d4"},
+    {"id": "travel", "name": "Travel", "icon": "fas fa-plane", "color": "#84cc16"},
+    {"id": "subscriptions", "name": "Subscriptions", "icon": "fas fa-sync", "color": "#f97316"},
+    {"id": "others", "name": "Others", "icon": "fas fa-ellipsis-h", "color": "#6b7280"}
+]

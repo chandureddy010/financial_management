@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data - AI Financial Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/user-data.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI FinanceHub</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-data.html" class="nav-link active">
+                            <i class="fas fa-user-circle"></i>
+                            <span>User Data</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transactions.html" class="nav-link">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="ai-advice.html" class="nav-link">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Advisor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>User Data</h1>
+                    <p>Manage your profile, spending categories, and financial preferences</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openProfileModal()">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportData()">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+            </header>
+            
+            <!-- User Data Content -->
+            <div class="user-data-content">
+                <!-- Profile Section -->
+                <div class="profile-section">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <img id="profileImage" src="" alt="Profile" class="avatar-image hidden">
+                                <div class="avatar-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <button class="avatar-upload" onclick="uploadProfileImage()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <div class="profile-info">
+                                <h2 id="profileName">Loading...</h2>
+                                <p id="profileEmail">Loading...</p>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Member Since</span>
+                                        <span class="stat-value" id="memberSince">Loading...</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Transactions</span>
+                                        <span class="stat-value" id="totalTransactions">0</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Categories Used</span>
+                                        <span class="stat-value" id="categoriesUsed">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-body">
+                            <div class="profile-details">
+                                <h3>Personal Information</h3>
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <label>Full Name</label>
+                                        <span id="detailName">Loading...</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <label>Email Address</label>
+                                        <span id="detailEmail">Loading...</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <label>Phone Number</label>
+                                        <span id="detailPhone">Loading...</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <label>Wallet Address</label>
+                                        <span id="detailWallet">Not connected</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-preferences">
+                                <h3>Financial Preferences</h3>
+                                <div class="preferences-grid">
+                                    <div class="preference-item">
+                                        <label>Preferred Currency</label>
+                                        <select id="preferredCurrency" onchange="updatePreference('currency', this.value)">
+                                            <option value="USD">USD - US Dollar</option>
+                                            <option value="EUR">EUR - Euro</option>
+                                            <option value="GBP">GBP - British Pound</option>
+                                            <option value="JPY">JPY - Japanese Yen</option>
+                                        </select>
+                                    </div>
+                                    <div class="preference-item">
+                                        <label>Monthly Budget Goal</label>
+                                        <input type="number" id="budgetGoal" placeholder="Enter amount" onchange="updatePreference('budgetGoal', this.value)">
+                                    </div>
+                                    <div class="preference-item">
+                                        <label>Savings Goal</label>
+                                        <input type="number" id="savingsGoal" placeholder="Enter amount" onchange="updatePreference('savingsGoal', this.value)">
+                                    </div>
+                                    <div class="preference-item">
+                                        <label>Risk Tolerance</label>
+                                        <select id="riskTolerance" onchange="updatePreference('riskTolerance', this.value)">
+                                            <option value="low">Conservative</option>
+                                            <option value="medium">Moderate</option>
+                                            <option value="high">Aggressive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Categories Section -->
+                <div class="categories-section">
+                    <div class="categories-card">
+                        <div class="categories-header">
+                            <h3>Spending Categories</h3>
+                            <button class="btn btn-primary" onclick="openCategoryModal()">
+                                <i class="fas fa-plus"></i> Add Category
+                            </button>
+                        </div>
+                        
+                        <div class="categories-grid" id="categoriesGrid">
+                            <!-- Categories will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Spending Analysis -->
+                <div class="analysis-section">
+                    <div class="analysis-card">
+                        <div class="analysis-header">
+                            <h3>Spending Analysis</h3>
+                            <div class="analysis-controls">
+                                <select id="analysisPeriod" onchange="updateAnalysis()">
+                                    <option value="week">This Week</option>
+                                    <option value="month" selected>This Month</option>
+                                    <option value="quarter">This Quarter</option>
+                                    <option value="year">This Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-content">
+                            <div class="spending-breakdown" id="spendingBreakdown">
+                                <!-- Spending breakdown will be populated here -->
+                            </div>
+                            
+                            <div class="spending-trends">
+                                <h4>Spending Trends</h4>
+                                <div class="trend-items" id="trendItems">
+                                    <!-- Trend items will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Budget Allocation -->
+                <div class="budget-section">
+                    <div class="budget-card">
+                        <div class="budget-header">
+                            <h3>Budget Allocation</h3>
+                            <button class="btn btn-primary" onclick="openBudgetModal()">
+                                <i class="fas fa-plus"></i> Set Budget
+                            </button>
+                        </div>
+                        
+                        <div class="budget-content">
+                            <div class="budget-summary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Total Budget</span>
+                                    <span class="summary-value" id="totalBudget">$0.00</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Allocated</span>
+                                    <span class="summary-value" id="allocatedBudget">$0.00</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Remaining</span>
+                                    <span class="summary-value" id="remainingBudget">$0.00</span>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-allocations" id="budgetAllocations">
+                                <!-- Budget allocations will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Profile Edit Modal -->
+    <div id="profileModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="modal-close" onclick="closeProfileModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label class="form-label" for="editFullName">Full Name</label>
+                        <input type="text" id="editFullName" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="editEmail">Email Address</label>
+                        <input type="email" id="editEmail" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="editPhone">Phone Number</label>
+                        <input type="tel" id="editPhone" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="editWallet">Wallet Address</label>
+                        <div class="wallet-input-group">
+                            <input type="text" id="editWallet" class="form-input" placeholder="0x...">
+                            <button type="button" class="btn btn-secondary" onclick="connectWalletForEdit()">
+                                <i class="fas fa-wallet"></i> Connect
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-full">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Category Modal -->
+    <div id="categoryModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="categoryModalTitle">Add Category</h3>
+                <button class="modal-close" onclick="closeCategoryModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label class="form-label" for="categoryName">Category Name</label>
+                        <input type="text" id="categoryName" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Category Icon</label>
+                        <div class="icon-picker" id="iconPicker">
+                            <div class="icon-option" data-icon="fas fa-utensils"><i class="fas fa-utensils"></i></div>
+                            <div class="icon-option" data-icon="fas fa-car"><i class="fas fa-car"></i></div>
+                            <div class="icon-option" data-icon="fas fa-shopping-cart"><i class="fas fa-shopping-cart"></i></div>
+                            <div class="icon-option" data-icon="fas fa-film"><i class="fas fa-film"></i></div>
+                            <div class="icon-option" data-icon="fas fa-lightbulb"><i class="fas fa-lightbulb"></i></div>
+                            <div class="icon-option" data-icon="fas fa-heartbeat"><i class="fas fa-heartbeat"></i></div>
+                            <div class="icon-option" data-icon="fas fa-graduation-cap"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="icon-option" data-icon="fas fa-plane"><i class="fas fa-plane"></i></div>
+                            <div class="icon-option" data-icon="fas fa-sync"><i class="fas fa-sync"></i></div>
+                            <div class="icon-option" data-icon="fas fa-ellipsis-h"><i class="fas fa-ellipsis-h"></i></div>
+                        </div>
+                        <input type="hidden" id="categoryIcon" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Category Color</label>
+                        <div class="color-picker" id="colorPicker">
+                            <div class="color-option" data-color="#ef4444" style="background-color: #ef4444;"></div>
+                            <div class="color-option" data-color="#3b82f6" style="background-color: #3b82f6;"></div>
+                            <div class="color-option" data-color="#10b981" style="background-color: #10b981;"></div>
+                            <div class="color-option" data-color="#f59e0b" style="background-color: #f59e0b;"></div>
+                            <div class="color-option" data-color="#8b5cf6" style="background-color: #8b5cf6;"></div>
+                            <div class="color-option" data-color="#ec4899" style="background-color: #ec4899;"></div>
+                            <div class="color-option" data-color="#06b6d4" style="background-color: #06b6d4;"></div>
+                            <div class="color-option" data-color="#84cc16" style="background-color: #84cc16;"></div>
+                            <div class="color-option" data-color="#f97316" style="background-color: #f97316;"></div>
+                            <div class="color-option" data-color="#6b7280" style="background-color: #6b7280;"></div>
+                        </div>
+                        <input type="hidden" id="categoryColor" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-full">
+                        <i class="fas fa-save"></i> Save Category
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Budget Modal -->
+    <div id="budgetModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Set Budget</h3>
+                <button class="modal-close" onclick="closeBudgetModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="budgetForm">
+                    <div class="form-group">
+                        <label class="form-label" for="budgetCategory">Category</label>
+                        <select id="budgetCategory" class="form-input" required>
+                            <option value="">Select category...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="budgetAmount">Monthly Budget Amount</label>
+                        <input type="number" id="budgetAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="budgetPeriod">Budget Period</label>
+                        <select id="budgetPeriod" class="form-input" required>
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-full">
+                        <i class="fas fa-save"></i> Set Budget
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/metamask.js"></script>
+    <script src="js/user-data.js"></script>
+</body>
+</html>
